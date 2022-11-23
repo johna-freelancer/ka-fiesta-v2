@@ -5,7 +5,7 @@
 export const environment = {
     production: false,
     // API_ENDPOINT: 'http://localhost:8000'
-    API_ENDPOINT: 'https://kafiesta-api.osc-fr1.scalingo.io'
+    API_ENDPOINT: 'https://staging-food2go.osc-fr1.scalingo.io'
     
 };
 
