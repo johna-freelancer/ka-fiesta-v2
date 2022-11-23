@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
-import { AuthService } from 'app/core/auth/auth.service';
+import { AuthService } from 'app/shared/services/auth.service';
+import { UserService } from 'app/shared/services/user.service';
 
 @Component({
     selector     : 'auth-sign-up',
@@ -27,7 +29,9 @@ export class AuthSignUpComponent implements OnInit
      */
     constructor(
         private _authService: AuthService,
+        private _userService: UserService,
         private _formBuilder: FormBuilder,
+        private _snackBar: MatSnackBar,
         private _router: Router
     )
     {
@@ -44,11 +48,12 @@ export class AuthSignUpComponent implements OnInit
     {
         // Create the form
         this.signUpForm = this._formBuilder.group({
-                name      : ['', Validators.required],
+                first_name      : ['', Validators.required],
+                last_name      : ['', Validators.required],
                 email     : ['', [Validators.required, Validators.email]],
                 password  : ['', Validators.required],
-                company   : [''],
-                agreements: ['', Validators.requiredTrue]
+                primary_contact  : ['', Validators.required],
+                complete_address  : ['', Validators.required],
             }
         );
     }
@@ -75,25 +80,21 @@ export class AuthSignUpComponent implements OnInit
         this.showAlert = false;
 
         // Sign up
-        this._authService.signUp(this.signUpForm.value)
+        this._userService.register(this.signUpForm.value)
             .subscribe(
                 (response) => {
-
-                    // Navigate to the confirmation required page
-                    this._router.navigateByUrl('/confirmation-required');
+                    this._snackBar.open('User registration success!','', {duration: 2000});
+                    this._router.navigateByUrl('/sign-in');
+                   
                 },
                 (response) => {
-
                     // Re-enable the form
                     this.signUpForm.enable();
-
-                    // Reset the form
-                    this.signUpNgForm.resetForm();
 
                     // Set the alert
                     this.alert = {
                         type   : 'error',
-                        message: 'Something went wrong, please try again.'
+                        message: response?.error?.message
                     };
 
                     // Show the alert

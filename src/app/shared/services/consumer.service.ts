@@ -39,8 +39,8 @@ export class ConsumerService {
     return this._http.get(environment.API_ENDPOINT + '/v1/consumer/search?keyword=' + keyword);
   }
 
-  getProducts(store_id) {
-    return this._http.get(environment.API_ENDPOINT + '/v1/consumer/products/' + store_id);
+  getProducts(payload) {
+    return this._http.post(environment.API_ENDPOINT + '/v1/consumer/products', payload);
   }
 
   addOrder(payload) {

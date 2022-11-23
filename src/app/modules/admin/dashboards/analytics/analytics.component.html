@@ -9,7 +9,7 @@
                 <div class="font-medium tracking-tight text-secondary">Monitor metrics, check reports and review performance</div>
             </div>
             <div class="flex items-center ml-6">
-                <button
+                <!-- <button
                     class="hidden sm:inline-flex"
                     mat-stroked-button>
                     <mat-icon
@@ -25,10 +25,10 @@
                         class="icon-size-5"
                         [svgIcon]="'heroicons_solid:save'"></mat-icon>
                     <span class="ml-2">Export</span>
-                </button>
+                </button> -->
 
                 <!-- Actions menu (visible on xs) -->
-                <div class="sm:hidden">
+                <!-- <div class="sm:hidden">
                     <button
                         [matMenuTriggerFor]="actionsMenu"
                         mat-icon-button>
@@ -38,7 +38,7 @@
                         <button mat-menu-item>Export</button>
                         <button mat-menu-item>Settings</button>
                     </mat-menu>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -47,21 +47,17 @@
             <div class="sm:col-span-2 lg:col-span-3 dark flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                 <div class="flex items-center justify-between mt-10 ml-10 mr-6 sm:mr-10">
                     <div class="flex flex-col">
-                        <div class="mr-4 text-2xl md:text-3xl font-semibold tracking-tight leading-7">Visitors Overview</div>
-                        <div class="font-medium text-secondary">Number of unique visitors</div>
+                        <div class="mr-4 text-2xl md:text-3xl font-semibold tracking-tight leading-7">Completed Orders Overview</div>
+                        <div class="font-medium text-secondary">Number of completed orders</div>
                     </div>
                     <div class="ml-2">
                         <mat-button-toggle-group
                             class="hidden sm:inline-flex border-none space-x-1"
-                            value="this-year"
+                            value="current-month"
                             #visitorsYearSelector="matButtonToggleGroup">
-                            <mat-button-toggle
+                            <mat-button-toggle (click)="prepareCompletedOrders()"
                                 class="px-1.5 rounded-full overflow-hidden border-none font-medium"
-                                value="last-year">Last Year
-                            </mat-button-toggle>
-                            <mat-button-toggle
-                                class="px-1.5 rounded-full overflow-hidden border-none font-medium"
-                                value="this-year">This Year
+                                value="current-month">Current Month
                             </mat-button-toggle>
                         </mat-button-toggle-group>
                         <div class="sm:hidden">
@@ -71,8 +67,7 @@
                                 <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
                             </button>
                             <mat-menu #visitorsMenu="matMenu">
-                                <button mat-menu-item>This Year</button>
-                                <button mat-menu-item>Last Year</button>
+                                <button mat-menu-item (click)="prepareCompletedOrders()">Current Month</button>
                             </mat-menu>
                         </div>
                     </div>
@@ -80,16 +75,16 @@
                 <div class="flex flex-col flex-auto h-80">
                     <apx-chart
                         class="flex-auto w-full h-full"
-                        [chart]="chartVisitors.chart"
-                        [colors]="chartVisitors.colors"
-                        [dataLabels]="chartVisitors.dataLabels"
-                        [fill]="chartVisitors.fill"
-                        [grid]="chartVisitors.grid"
-                        [series]="chartVisitors.series[visitorsYearSelector.value]"
-                        [stroke]="chartVisitors.stroke"
-                        [tooltip]="chartVisitors.tooltip"
-                        [xaxis]="chartVisitors.xaxis"
-                        [yaxis]="chartVisitors.yaxis"></apx-chart>
+                        [chart]="chartCompletedOrders.chart"
+                        [colors]="chartCompletedOrders.colors"
+                        [dataLabels]="chartCompletedOrders.dataLabels"
+                        [fill]="chartCompletedOrders.fill"
+                        [grid]="chartCompletedOrders.grid"
+                        [series]="chartCompletedOrders.series[visitorsYearSelector.value]"
+                        [stroke]="chartCompletedOrders.stroke"
+                        [tooltip]="chartCompletedOrders.tooltip"
+                        [xaxis]="chartCompletedOrders.xaxis"
+                        [yaxis]="chartCompletedOrders.yaxis"></apx-chart>
                 </div>
             </div>
             <!-- Conversions -->
@@ -179,8 +174,8 @@
             <!-- Visits -->
             <div class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                 <div class="flex items-start justify-between m-6 mb-0">
-                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Visits</div>
-                    <div class="ml-2">
+                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Active Merchants</div>
+                    <!-- <div class="ml-2">
                         <button
                             class="h-6 min-h-6 px-2 rounded-full bg-hover"
                             mat-button
@@ -192,11 +187,11 @@
                             <button mat-menu-item>3 months</button>
                             <button mat-menu-item>9 months</button>
                         </mat-menu>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="flex flex-col lg:flex-row lg:items-center mx-6 mt-3">
-                    <div class="text-7xl font-bold tracking-tighter leading-tight">{{data.visits.amount | number:'1.0-0'}}</div>
-                    <div class="flex lg:flex-col lg:ml-3">
+                    <div class="text-7xl font-bold tracking-tighter leading-tight">{{activeMerchantCountSeries.amount | number:'1.0-0'}}</div>
+                    <!-- <div class="flex lg:flex-col lg:ml-3">
                         <mat-icon
                             class="icon-size-5 text-red-500"
                             [svgIcon]="'heroicons_solid:trending-down'"></mat-icon>
@@ -204,18 +199,18 @@
                             <span class="font-medium text-red-500">4%</span>
                             <span class="ml-1">below target</span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="flex flex-col flex-auto h-20">
                     <apx-chart
                         class="flex-auto w-full h-full"
-                        [chart]="chartVisits.chart"
-                        [colors]="chartVisits.colors"
-                        [series]="chartVisits.series"
-                        [stroke]="chartVisits.stroke"
-                        [tooltip]="chartVisits.tooltip"
-                        [xaxis]="chartVisits.xaxis"
-                        [yaxis]="chartVisits.yaxis"></apx-chart>
+                        [chart]="chartActiveMerchants.chart"
+                        [colors]="chartActiveMerchants.colors"
+                        [series]="chartActiveMerchants.series"
+                        [stroke]="chartActiveMerchants.stroke"
+                        [tooltip]="chartActiveMerchants.tooltip"
+                        [xaxis]="chartActiveMerchants.xaxis"
+                        [yaxis]="chartActiveMerchants.yaxis"></apx-chart>
                 </div>
             </div>
         </div>
@@ -299,16 +294,16 @@
             <div class="flex flex-col flex-auto h-80 mt-3">
                 <apx-chart
                     class="flex-auto w-full h-full"
-                    [chart]="chartVisitorsVsPageViews.chart"
-                    [colors]="chartVisitorsVsPageViews.colors"
-                    [dataLabels]="chartVisitorsVsPageViews.dataLabels"
-                    [grid]="chartVisitorsVsPageViews.grid"
-                    [legend]="chartVisitorsVsPageViews.legend"
-                    [series]="chartVisitorsVsPageViews.series"
-                    [stroke]="chartVisitorsVsPageViews.stroke"
-                    [tooltip]="chartVisitorsVsPageViews.tooltip"
-                    [xaxis]="chartVisitorsVsPageViews.xaxis"
-                    [yaxis]="chartVisitorsVsPageViews.yaxis"></apx-chart>
+                    [chart]="chartCompletedOrdersVsPageViews.chart"
+                    [colors]="chartCompletedOrdersVsPageViews.colors"
+                    [dataLabels]="chartCompletedOrdersVsPageViews.dataLabels"
+                    [grid]="chartCompletedOrdersVsPageViews.grid"
+                    [legend]="chartCompletedOrdersVsPageViews.legend"
+                    [series]="chartCompletedOrdersVsPageViews.series"
+                    [stroke]="chartCompletedOrdersVsPageViews.stroke"
+                    [tooltip]="chartCompletedOrdersVsPageViews.tooltip"
+                    [xaxis]="chartCompletedOrdersVsPageViews.xaxis"
+                    [yaxis]="chartCompletedOrdersVsPageViews.yaxis"></apx-chart>
             </div>
         </div>
 

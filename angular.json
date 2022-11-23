@@ -67,6 +67,7 @@
                             "src/assets/vendors/fontawesome/all.min.js",
                             "src/assets/js/theme.js"
                         ]
+                        
                     },
                     "configurations": {
                         "production": {
@@ -78,7 +79,7 @@
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "1000kb",
+                                    "maximumWarning": "900kb",
                                     "maximumError": "1000kb"
                                 }
                             ],
@@ -137,7 +138,7 @@
                         ],
                         "scripts": []
                     }
-                },
+                },  
                 "lint": {
                     "builder": "@angular-eslint/builder:lint",
                     "options": {

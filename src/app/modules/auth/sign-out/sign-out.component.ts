@@ -21,7 +21,6 @@ export class AuthSignOutComponent implements OnInit, OnDestroy
      * Constructor
      */
     constructor(
-        private _authService: AuthService,
         private _router: Router
     )
     {
@@ -36,14 +35,12 @@ export class AuthSignOutComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        // Sign out
-        this._authService.signOut();
 
         // Redirect after the countdown
         timer(1000, 1000)
             .pipe(
                 finalize(() => {
-                    this._router.navigate(['sign-in']);
+                    this._router.navigateByUrl('/sign-in');
                 }),
                 takeWhile(() => this.countdown > 0),
                 takeUntil(this._unsubscribeAll),

@@ -3,6 +3,7 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
+import { Auth2Guard } from './core/auth/guards/auth2.guard';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -40,8 +41,8 @@ export const appRoutes: Route[] = [
     // Auth routes for authenticated users
     {
         path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
+        // canActivate: [AuthGuard],
+        // canActivateChild: [AuthGuard],
         component: LayoutComponent,
         data: {
             layout: 'empty'
@@ -67,7 +68,8 @@ export const appRoutes: Route[] = [
     // Admin routes
     {
         path       : '',
-        // canActivate: [AuthGuard],
+        data: {roles: ['admin']},
+        canActivate: [Auth2Guard],
         // canActivateChild: [AuthGuard],
         component  : LayoutComponent,
         resolve    : {
@@ -76,6 +78,7 @@ export const appRoutes: Route[] = [
         children   : [
             {path: 'dashboard/analytics', loadChildren: () => import('app/modules/admin/dashboards/analytics/analytics.module').then(m => m.AnalyticsModule)},
             {path: 'admin/users', loadChildren: () => import('app/modules/admin/users/users.module').then(m => m.UsersModule)},
+            {path: 'admin/weekly-payments', loadChildren: () => import('app/modules/admin/weekly-payments/weekly-payments.module').then(m => m.WeeklyPaymentsModule)}
         ]
     }
 ];

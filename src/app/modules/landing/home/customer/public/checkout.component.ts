@@ -13,7 +13,7 @@ import { UserService } from 'app/shared/services/user.service';
 @Component({
     selector     : 'landing-checkout',
     templateUrl  : './checkout.component.html',
-    styleUrls: ['./assets/css/theme.css'],
+    styleUrls: ['./assets/css/theme.min.css'],
     encapsulation: ViewEncapsulation.None
 })
 export class CheckoutComponent
@@ -108,6 +108,8 @@ export class CheckoutComponent
     logout() {
         this._auth.logout()
         .subscribe(()=>{
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
             this._router.navigateByUrl('/stores');
             this.getUser();
         });

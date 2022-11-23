@@ -4,6 +4,7 @@ import { BooleanInput } from '@angular/cdk/coercion';
 import { Subject, takeUntil } from 'rxjs';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
+import { AuthService } from 'app/shared/services/auth.service';
 
 @Component({
     selector       : 'user',
@@ -20,7 +21,7 @@ export class UserComponent implements OnInit, OnDestroy
 
     @Input() showAvatar: boolean = true;
     user: User;
-
+    profile: any;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -29,7 +30,8 @@ export class UserComponent implements OnInit, OnDestroy
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
-        private _userService: UserService
+        private _userService: UserService,
+        private _authService: AuthService
     )
     {
     }
@@ -52,6 +54,8 @@ export class UserComponent implements OnInit, OnDestroy
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+        this.profile = this._authService.getUser();
     }
 
     /**
@@ -93,6 +97,11 @@ export class UserComponent implements OnInit, OnDestroy
      */
     signOut(): void
     {
-        this._router.navigate(['/sign-out']);
+        this._authService.logout()
+        .subscribe(()=>{
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            this._router.navigate(['/sign-out']);
+        });
     }
 }

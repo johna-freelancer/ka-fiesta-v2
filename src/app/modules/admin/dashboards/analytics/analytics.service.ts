@@ -59,4 +59,9 @@ export class AnalyticsService
     {
         return this._httpClient.get(environment.API_ENDPOINT + '/v1/dashboard/getActiveMerchantCount');
     }
+
+    getCompletedTransactions() 
+    {
+        return this._httpClient.get(environment.API_ENDPOINT + '/v1/dashboard/getNumberOfCompletedOrders');
+    }
 }

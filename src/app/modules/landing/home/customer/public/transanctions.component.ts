@@ -17,7 +17,7 @@ import { DatePipe } from '@angular/common';
 @Component({
     selector     : 'landing-transaction',
     templateUrl  : './transactions.component.html',
-    styleUrls: ['./assets/css/theme.css'],
+    styleUrls: ['./assets/css/theme.min.css'],
     encapsulation: ViewEncapsulation.None
 })
 
@@ -98,6 +98,8 @@ export class TransactionComponent
     logout() {
         this._auth.logout()
         .subscribe(()=>{
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
             this._router.navigateByUrl('/stores');
             this.getUser();
         });

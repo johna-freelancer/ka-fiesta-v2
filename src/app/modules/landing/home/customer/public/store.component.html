@@ -5,7 +5,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <style>
+        @media only screen and (max-width: 600px) {
+            .self-end{ 
+                align-self: end;
+            }
+        }
+    </style>
 </head>
 
 
@@ -52,8 +58,8 @@
                                 alt="hero-header" /></a></div>
                     <div class="col-md-7 col-lg-6 py-8 text-md-start text-center">
                         <h1 class="display-1 fs-md-5 fs-lg-6 fs-xl-8 text-light">{{ store?.name }}</h1>
-                        <h1 class="text-800 mb-5 fs-4">{{ tConvert(store?.open_hour) }} to {{ tConvert(store?.close_hour) }}<br class="d-none d-xxl-block" />{{ store?.address }}</h1>
-                        <button class="btn btn-danger" type="button" (click)="back()">Go Back</button>
+                        <h5 class="text-1000 mb-5 fs-4" style="font-size: 15px !important;">{{ tConvert(store?.open_hour) }} to {{ tConvert(store?.close_hour) }}<br>{{ store?.address }}</h5>
+                        <button class="btn btn-danger" type="button" (click)="back()">Stores</button>
                     </div>
                 </div>
             </div>
@@ -67,42 +73,35 @@
             <div class="container">
                 <div class="row h-100">
                     <div class="col-lg-7 mx-auto text-center mt-7 mb-5">
-                        <h5 class="fw-bold fs-3 fs-lg-5 lh-sm">{{ records?.length == 1 && records[0].products[0] == null ? 'No Available Menu' : 'Our Menu' }}</h5>
+                        <h5 class="fw-bold fs-3 fs-lg-5 lh-sm">Our Menu</h5>
+                        <div class="input-group-icon mb-2"><i class="fas fa-utensils text-danger input-box-icon"></i>
+                            <label class="visually-hidden" for="inputDelivery">Cravings</label>
+                            <input [(ngModel)]="keyword" name="keyword" style="border: 1px solid orange" class="form-control input-box form-foodwagon-control" id="inputDelivery" type="text" placeholder="Find food" />
+                        </div>
+                        <button class="btn btn-danger" type="button" (click)="fetchProducts()">Find Food</button>
+                    </div>
+                    <div class="col-lg-7 mx-auto text-center mt-7 mb-5">
+                        <h5 class="fw-bold fs-3 fs-lg-5 lh-sm">{{ records?.length == 0 ? 'No Products' : '' }}</h5>
                     </div>
                     <div class="col-12">
-                        <div class="carousel slide" id="carouselPopularItems" data-bs-touch="false"
-                            data-bs-interval="false">
-                            <div class="carousel-inner">
-                                <div class="carousel-item {{record?.page == 1 ? 'active' : ''}}" data-bs-interval="{{record?.page == 1 ? '10000' : '5000'}}" *ngFor="let record of records">
-                                    <div class="row gx-3 h-100 align-items-center">
-                                        <div class="col-sm-6 col-md-4 col-xl mb-5 h-100" *ngFor="let product of record?.products" [hidden]="product == null">
-                                            <div class="card card-span h-[400px] rounded-3"><img
-                                                    class="img-fluid rounded-3 h-[300px] max-h-[300px]"
-                                                    [src]="product?.image_url" alt="..." />
-                                                <div class="card-body ps-0">
-                                                    <h5 class="fw-bold text-1000 text-truncate mb-1">{{ product?.name }}</h5>
-                                                    <div><span
-                                                            class="text-primary">{{ product?.description | slice:0:30}} ...</span></div><span
-                                                        class="text-1000 fw-bold">{{ product?.price | currency : '₱'}}</span>
-                                                </div>
-                                            </div>
-                                            <div class="d-grid gap-2"><a class="btn btn-lg btn-danger" href="javascript:;"
-                                                    role="button" (click)="addToCart({product_id: product?.id, product_name: product?.name, price: product?.price})">Add to Cart</a></div>
-                                        </div>
-                                        <div [hidden]="record.products.length == 5" class="col-sm-6 col-md-4 col-xl mb-5 h-100" *ngFor="let x of counter(5 - record?.products.length)">
-                                        </div>
+                        <div class="row gx-3 h-100 align-items-center">
+                            <div class="col-6 col-lg-3 col-md-3 mb-4" *ngFor="let product of records">
+                                <div class="card card-span h-[400px] rounded-3 p-2"><img
+                                        class="img-fluid rounded-3 h-[240px] max-h-[240px]"
+                                        [src]="product?.image_url" alt="..." />
+                                    <div class="card-body ps-0">
+                                        <h5 class="fw-bold text-1000 text-truncate mb-1">{{ product?.name }}</h5>
+                                        <div><span
+                                                class="text-primary">{{ product?.description | slice:0:30}} ...</span></div><span
+                                            class="text-1000 fw-bold">{{ product?.price | currency : '₱'}}</span>
                                     </div>
+                                        <a class="btn btn-lg btn-danger" href="javascript:;" *ngIf="product?.status == 'active' && product?.quantity > 0"
+                                        role="button" (click)="addToCart({product_id: product?.id, product_name: product?.name, price: product?.price})">Add to Cart</a>
+                                        <a class="btn-lg" style="background-color:gray; text-align: center; color: white; font-weight: 400;" href="javascript:;" *ngIf="product?.status == 'inactive' || product?.quantity <= 0"
+                                        role="button">Not Available</a>
                                 </div>
+                                
                             </div>
-                            <button class="carousel-control-prev carousel-icon" type="button" *ngIf="!(records?.length == 1 && records[0].products[0] == null)"
-                                data-bs-target="#carouselPopularItems" data-bs-slide="prev"><span
-                                    class="carousel-control-prev-icon hover-top-shadow" aria-hidden="true"></span><span
-                                    class="visually-hidden">Previous</span></button>
-                            <button class="carousel-control-next carousel-icon" type="button" *ngIf="!(records?.length == 1 && records[0].products[0] == null)"
-                                data-bs-target="#carouselPopularItems" data-bs-slide="next"><span
-                                    class="carousel-control-next-icon hover-top-shadow" aria-hidden="true"></span><span
-                                    class="visually-hidden">Next </span></button>
-                            
                         </div>
                     </div>
                 </div>
@@ -117,7 +116,7 @@
                 <hr class="border border-800" />
                 <div class="row flex-center pb-3">
                     <div class="col-md-6 order-0">
-                        <p class="text-200 text-center text-md-start">All rights Reserved &copy; Your Company, 2021</p>
+                        <p class="text-200 text-center text-md-start">All rights Reserved &copy; Food2Go, 2022</p>
                     </div>
                     <div class="col-md-6 order-1">
                         <p class="text-200 text-center text-md-end"> Made with&nbsp;

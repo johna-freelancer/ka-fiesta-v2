@@ -3,7 +3,7 @@
         <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
             <!-- Logo -->
             <div class="w-12">
-                <img src="assets/images/logo/logo.svg">
+                <img src="assets/img/gallery/logo.svg">
             </div>
 
             <!-- Title -->
@@ -34,16 +34,48 @@
 
                 <!-- Name field -->
                 <mat-form-field class="w-full">
-                    <mat-label>Full name</mat-label>
+                    <mat-label>First name</mat-label>
                     <input
-                        id="name"
+                        id="firstname"
                         matInput
-                        [formControlName]="'name'">
-                    <mat-error *ngIf="signUpForm.get('name').hasError('required')">
-                        Full name is required
+                        [formControlName]="'first_name'">
+                    <mat-error *ngIf="signUpForm.get('first_name').hasError('required')">
+                        First name is required
                     </mat-error>
                 </mat-form-field>
-
+                   <!-- Name field -->
+                   <mat-form-field class="w-full">
+                    <mat-label>Last name</mat-label>
+                    <input
+                        id="lastname"
+                        matInput
+                        [formControlName]="'last_name'">
+                    <mat-error *ngIf="signUpForm.get('last_name').hasError('required')">
+                        Last name is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="w-full">
+                    <mat-label>Contact Number</mat-label>
+                    <input
+                        id="contact"
+                        matInput
+                        [formControlName]="'primary_contact'">
+                    <mat-error *ngIf="signUpForm.get('primary_contact').hasError('required')">
+                        Contact number is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="w-full">
+                    <mat-label>Complete Address</mat-label>
+                    <textarea
+                        id="address"
+                        matInput
+                        rows="4"
+                        [formControlName]="'complete_address'">
+                    </textarea>
+                    <mat-error *ngIf="signUpForm.get('complete_address').hasError('required')">
+                        Address is required
+                    </mat-error>
+                </mat-form-field>
                 <!-- Email field -->
                 <mat-form-field class="w-full">
                     <mat-label>Email address</mat-label>
@@ -87,38 +119,11 @@
                     </mat-error>
                 </mat-form-field>
 
-                <!-- Company field -->
-                <mat-form-field class="w-full">
-                    <mat-label>Company</mat-label>
-                    <input
-                        id="company-confirm"
-                        matInput
-                        [formControlName]="'company'">
-                </mat-form-field>
-
-                <!-- ToS and PP -->
-                <div class="inline-flex items-end w-full mt-1.5">
-                    <mat-checkbox
-                        [color]="'primary'"
-                        [formControlName]="'agreements'">
-                        <span>I agree to the</span>
-                        <a
-                            class="ml-1 text-primary-500 hover:underline"
-                            [routerLink]="['./']">Terms of Service
-                        </a>
-                        <span>and</span>
-                        <a
-                            class="ml-1 text-primary-500 hover:underline"
-                            [routerLink]="['./']">Privacy Policy
-                        </a>
-                    </mat-checkbox>
-                </div>
-
                 <!-- Submit button -->
                 <button
                     class="fuse-mat-button-large w-full mt-6"
                     mat-flat-button
-                    [color]="'primary'"
+                    [color]="'accent'"
                     [disabled]="signUpForm.disabled"
                     (click)="signUp()">
                     <span *ngIf="!signUpForm.disabled">
@@ -133,18 +138,18 @@
             </form>
         </div>
     </div>
-    <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-l">
+    <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-yellow-500 dark:border-l">
         <!-- Background - @formatter:off -->
         <!-- Rings -->
         <svg class="absolute inset-0 pointer-events-none"
              viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
-            <g class="text-gray-700 opacity-25" fill="none" stroke="currentColor" stroke-width="100">
+            <g class="text-yellow-700 opacity-25" fill="none" stroke="currentColor" stroke-width="100">
                 <circle r="234" cx="196" cy="23"></circle>
                 <circle r="234" cx="790" cy="491"></circle>
             </g>
         </svg>
         <!-- Dots -->
-        <svg class="absolute -top-16 -right-16 text-gray-700"
+        <svg class="absolute -top-16 -right-16 text-yellow-700"
              viewBox="0 0 220 192" width="220" height="192" fill="none">
             <defs>
                 <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -156,11 +161,10 @@
         <!-- @formatter:on -->
         <!-- Content -->
         <div class="z-10 relative w-full max-w-2xl">
-            <div class="text-7xl font-bold leading-none text-gray-100">
-                <div>Welcome to</div>
-                <div>our community</div>
+            <div class="text-9xl font-extrabold tracking-tight leading-tight text-gray-100">
+             
             </div>
-            <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400">
+            <!-- <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400">
                 Fuse helps developers to build organized and well coded dashboards full of beautiful and rich modules.
                 Join us and start building your application today.
             </div>
@@ -180,7 +184,7 @@
                         src="assets/images/avatars/male-16.jpg">
                 </div>
                 <div class="ml-4 font-medium tracking-tight text-gray-400">More than 17k people joined us, it's your turn</div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

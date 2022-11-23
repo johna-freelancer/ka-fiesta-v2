@@ -1,0 +1,246 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent">
+
+    <!-- Header -->
+    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <div class="text-4xl font-extrabold tracking-tight">Weekly Payments</div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded min-w-36">
+                <mat-select
+                    [value]="'all'"
+                    [(ngModel)]="status">
+                    <mat-option [value]="'all'">All</mat-option>
+                    <mat-option [value]="'pending'">Pending</mat-option>
+                    <mat-option [value]="'settled'">Settled</mat-option>
+                    <mat-option [value]="'completed'">Completed</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- Search -->
+            <mat-form-field class="fuse-mat-dense ml-2 fuse-mat-no-subscript fuse-mat-rounded min-w-52">
+                <input matInput [matDatepicker]="picker" placeholder="Date From" [(ngModel)]="dateFrom">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript ml-2 fuse-mat-rounded min-w-52">
+                <input matInput [matDatepicker]="picker2" placeholder="Date To" [(ngModel)]="dateTo">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+            <!-- Add product button -->
+            <button
+                class="ml-4"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="search()">
+                <span class="ml-2 mr-1">Search</span>
+            </button>
+            <button
+                class="ml-4"
+                mat-flat-button
+                [color]="'accent'"
+                (click)="sendWeeklyPayment()"
+                [disabled]="isLoading">
+                <span class="ml-2 mr-1">Send Weekly Payment</span>
+            </button>
+        </div>
+        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded min-w-64">
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                <input
+                    matInput
+                    [(ngModel)]="searchKeyword"
+                    [autocomplete]="'off'"
+                    (keyup.enter)="searchKeywordInput()"
+                    [placeholder]="'Search'">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+
+        <!-- Products list -->
+        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+
+            <div class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+                <div class="p-6">
+                    <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">Recent Weekly Payment</div>
+                    <!-- <div class="text-secondary font-medium">1 pending, 4 completed</div> -->
+                </div>
+                <div class="overflow-x-auto mx-6">
+                    <table
+                        class="w-full bg-transparent"
+                        mat-table
+                        matSort
+                        [dataSource]="weeklyPaymentsDataSource"
+                        [trackBy]="trackByFn"
+                        #recentTransactionsTable>
+
+                        <!-- Transaction ID -->
+                        <ng-container matColumnDef="referenceId">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef>
+                                Reference ID
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction">
+                                <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
+                                    {{transaction.id}}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Date -->
+                        <ng-container matColumnDef="date">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef>
+                                Date
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{transaction.date_from | date:'MMM dd, y'}} to {{transaction.date_to | date:'MMM dd, y'}}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Name -->
+                        <ng-container matColumnDef="name">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef>
+                                Name
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{transaction.merchant_name}}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Amount -->
+                        <ng-container matColumnDef="amount">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef>
+                                Amount
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction">
+                                <span class="pr-6 font-medium whitespace-nowrap">
+                                    {{transaction.amount | currency:'PHP'}}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Status -->
+                        <ng-container matColumnDef="status">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef>
+                                Status
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction">
+                                <span
+                                    class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                                    [ngClass]="{'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-50': transaction.status === 'pending',
+                                                'bg-blue-200 text-blue-800 dark:bg-blue-600 dark:text-blue-50': transaction.status === 'settled',
+                                                'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-50': transaction.status === 'completed'
+                                            }">
+                                    <span class="leading-relaxed whitespace-nowrap">{{transaction.status}}</span>
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="proof">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef>
+                                Proof
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction">
+                                <span
+                                    class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase">
+                                    <span class="leading-relaxed whitespace-nowrap" *ngIf="transaction.proof_url"><a href="{{transaction.proof_url}}" target="_blank">View</a></span>
+                                    <span class="leading-relaxed whitespace-nowrap" *ngIf="!transaction.proof_url">Not Available</span>
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="action">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef>
+                                Action
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let transaction">
+                                <span
+                                    *ngIf="transaction?.status == 'settled'"
+                                    class="cursor-pointer inline-flex items-center font-bold text-sm px-2.5 py-0.5 rounded-full tracking-wide uppercase bg-blue-200 text-blue-800 dark:bg-blue-600 dark:text-blue-50">
+                                    <span class="leading-relaxed whitespace-nowrap" (click)="approve(transaction?.id)">Verify</span>
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Footer -->
+                        <ng-container matColumnDef="recentOrdersTableFooter">
+                            <td
+                                class="py-6 px-0 border-0"
+                                mat-footer-cell
+                                *matFooterCellDef
+                                colspan="6">
+                                <button mat-stroked-button *ngIf="seemore" (click)="seeMore()">Show More</button>
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="weeklyPaymentsTableColumns"></tr>
+                        <tr
+                            class="order-row h-16"
+                            mat-row
+                            *matRowDef="let row; columns: weeklyPaymentsTableColumns;"></tr>
+                        <tr
+                            class="h-16 border-0"
+                            mat-footer-row
+                            *matFooterRowDef="['recentOrdersTableFooter']"></tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

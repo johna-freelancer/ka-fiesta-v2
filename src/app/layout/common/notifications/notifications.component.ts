@@ -50,7 +50,7 @@ export class NotificationsComponent implements OnInit, OnDestroy
             .subscribe((notifications: Notification[]) => {
 
                 // Load the notifications
-                this.notifications = notifications;
+                // this.notifications = notifications;
 
                 // Calculate the unread count
                 this._calculateUnreadCount();

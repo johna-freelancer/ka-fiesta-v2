@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { Auth2Guard } from 'app/core/auth/guards/auth2.guard';
 import { UsersDetailsComponent } from './details/details.component';
 import { UsersListComponent } from './list/list.component';
 import { UsersComponent } from './users.component';
@@ -23,6 +24,8 @@ export const usersRoutes: Route[] = [
                         resolve      : {
                             user  : UsersUserResolver,
                         },
+                        data: { roles: ['admin'] },
+                        canActivate: [ Auth2Guard ],
                         canDeactivate: [CanDeactivateUsersDetails]
                     }
                 ]

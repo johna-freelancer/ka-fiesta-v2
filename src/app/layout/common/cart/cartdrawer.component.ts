@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { FuseConfigService } from '@fuse/services/config';
@@ -27,8 +27,8 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 export class CartDrawerComponent implements OnInit, OnDestroy
 {
     config: AppConfig;
+    drawerOpened = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-
     /**
      * Constructor
      */
@@ -86,6 +86,7 @@ export class CartDrawerComponent implements OnInit, OnDestroy
 
     checkout() {
         if (this._auth.isAuthenticated()) {
+            this.drawerOpened = false;
             this._router.navigateByUrl('/stores/' + this.cart.store.id + '/checkout');
         } else {
             this._fuseConfirmationService.open(
@@ -111,6 +112,7 @@ export class CartDrawerComponent implements OnInit, OnDestroy
                   dismissible: true
               }).afterClosed().subscribe(result => {
                 if (result == 'confirmed') {
+                    this.drawerOpened = false;
                     this._router.navigateByUrl('/sign-in?redirectURL=stores/' + this.cart.store.id + '/checkout');
                 }
               });

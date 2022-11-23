@@ -7,6 +7,7 @@ import { Navigation } from 'app/core/navigation/navigation.types';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
+import { AuthService } from 'app/shared/services/auth.service';
 
 @Component({
     selector     : 'classy-layout',
@@ -18,9 +19,11 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     isScreenSmall: boolean;
     navigation: Navigation;
     user: User;
+    profile: any;
     menuList: any[] = [
         { id: 'dashboard', title: 'Dashboard', 'type': 'basic', icon: 'heroicons_outline:chart-pie', link: '/dashboard/analytics'},
         { id: 'user', title: 'Users', 'type': 'basic', icon: 'heroicons_outline:user-group', link: '/admin/users'},
+        { id: 'weekly_payments', title: 'Weekly Payments', 'type': 'basic', icon: 'heroicons_outline:receipt-tax', link: '/admin/weekly-payments'},
         { id: 'reports', title: 'Reports', 'type': 'basic', icon: 'heroicons_outline:document-report', link: '/admin/reports'},
     ];
     menu: Navigation = {
@@ -40,6 +43,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
         private _router: Router,
         private _navigationService: NavigationService,
         private _userService: UserService,
+        private _authService: AuthService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseNavigationService: FuseNavigationService
     )
@@ -80,6 +84,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
             .subscribe((user: User) => {
                 this.user = user;
             });
+        this.profile = this._authService.getUser();
 
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
