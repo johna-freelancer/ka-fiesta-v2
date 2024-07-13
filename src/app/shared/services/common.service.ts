@@ -11,25 +11,6 @@ export class CommonService {
   constructor(
   ) { }
 
-  getUser() {
-    return JSON.parse(localStorage.getItem('user'));
-  }
-
-  isGranted(role: string) {
-    if (role.toLowerCase() === this.getUser().role.toLowerCase())
-      return true;
-    return false
-  }
-
-  isGrantedAny(roles: string[]) {
-    var result = false
-    roles.forEach(role => {
-      if (role.toLowerCase() === this.getUser().role.toLowerCase())
-        result = true;
-    });
-    return result;
-  }
-
   generateKey(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -41,8 +22,7 @@ export class CommonService {
     return result;
   }
 
-  tConvert (time) {
-    // Check correct time format and split into components
+  tConvert(time) {
     time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)?$/) || [time];
 
     if (time.length > 1) { // If time format correct

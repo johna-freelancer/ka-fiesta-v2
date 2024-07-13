@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExtraOptions, PreloadAllModules, RouterModule } from '@angular/router';
@@ -14,11 +14,21 @@ import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthService } from './shared/services/auth.service';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
     scrollPositionRestoration: 'enabled'
 };
+
+function appInitializer(authService: AuthService) {
+    return () => {
+      return new Promise((resolve) => {
+        // @ts-ignore
+        authService.load().subscribe().add(resolve);
+      });
+    };
+  }
 
 @NgModule({
     declarations: [
@@ -45,6 +55,12 @@ const routerConfig: ExtraOptions = {
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: appInitializer,
+            multi: true,
+            deps: [AuthService],
+        },
     ],
     bootstrap   : [
         AppComponent

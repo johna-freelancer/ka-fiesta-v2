@@ -84,7 +84,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
             .subscribe((user: User) => {
                 this.user = user;
             });
-        this.profile = this._authService.getUser();
+        this.profile = this._authService.user;
 
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$

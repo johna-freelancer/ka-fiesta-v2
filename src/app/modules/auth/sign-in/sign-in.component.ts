@@ -71,44 +71,18 @@ export class AuthSignInComponent implements OnInit {
         this.showAlert = false;
 
         // Sign in
-        this._auth.login(this.signInForm.value)
-            .subscribe((response: any) => {
-                    if (response.status == 'success') {
-                        // Set the redirect url.
-                        // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
-                        // to the correct page after a successful sign in. This way, that url can be set via
-                        // routing file and we don't have to touch here.
-                        let redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || null;
-                        this._auth.setToken(response.data.token);
-                        this._auth.setUser(JSON.stringify(response.data.profile));
-                        this._user.getRole().subscribe((response: any) => {
-                            this._user.role = response['result'].role;
-                            if (!redirectURL) {
-                                if (this._user.role == 'buyer') {
-                                    redirectURL = '/stores';
-                                } else if (this._user.role == 'admin') {
-                                    redirectURL = '/dashboard/analytics';
-                                } else {
-                                    redirectURL = '/stores';
-                                }
-                            }
-                            this._router.navigateByUrl(redirectURL);
-                        })
-                    }
-                },
-                (response) => {
-                    // Re-enable the form
-                    this.signInForm.enable();
-
-                    // Set the alert
-                    this.alert = {
-                        type: 'error',
-                        message: 'Wrong email or password'
-                    };
-
-                    // Show the alert
-                    this.showAlert = true;
-                }
-            );
+        this._auth.login(this.signInForm.value).subscribe(error => {
+            if (error.status === 'failed') {
+                // Re-enable the form
+                this.signInForm.enable();
+                // Set the alert
+                this.alert = {
+                    type: 'error',
+                    message: 'Wrong email or password'
+                };
+                // Show the alert
+                this.showAlert = true;
+            }
+        });
     }
 }

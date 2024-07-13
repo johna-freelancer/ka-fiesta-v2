@@ -25,17 +25,16 @@ export class LandingHomeComponent
     user: any;
     trackOrderNumber = '';
     constructor(
-    private _consumer: ConsumerService,
-    private _common: CommonService,
-    private _router: Router,
-    private _auth: AuthService,
-    private _user: UserService,
-    private _notify: NotificationService,
-    private _fuseConfirmationService: FuseConfirmationService,
-    private _pusher: PusherService,
-    private _snackBar: MatSnackBar
-    )
-    {
+        private _consumer: ConsumerService,
+        private _common: CommonService,
+        private _router: Router,
+        private _auth: AuthService,
+        private _user: UserService,
+        private _notify: NotificationService,
+        private _fuseConfirmationService: FuseConfirmationService,
+        private _pusher: PusherService,
+        private _snackBar: MatSnackBar
+    ) {
         
     }
 
@@ -62,7 +61,7 @@ export class LandingHomeComponent
     }
 
     getUser() {
-        this.user = this._auth.getUser();
+        this.user = this._auth.user();
     }
 
     fetch() {

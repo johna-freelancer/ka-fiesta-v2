@@ -22,7 +22,7 @@ export class StoreComponent
     keyword = '';
     today = new Date().getDay();
     shopLoading = true;
-    user = [];
+    user: any;
     store: any;
     constructor(
     private _consumer: ConsumerService,
@@ -49,7 +49,7 @@ export class StoreComponent
     }
 
     getUser() {
-        this.user = this._auth.getUser();
+        this.user = this._auth.user();
     }
 
     fetchProducts() {

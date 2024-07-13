@@ -85,7 +85,7 @@ export class CartDrawerComponent implements OnInit, OnDestroy
     }
 
     checkout() {
-        if (this._auth.isAuthenticated()) {
+        if (((this._auth.user()))) {
             this.drawerOpened = false;
             this._router.navigateByUrl('/stores/' + this.cart.store.id + '/checkout');
         } else {

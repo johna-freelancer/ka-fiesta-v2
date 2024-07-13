@@ -55,7 +55,7 @@ export class UserComponent implements OnInit, OnDestroy
                 this._changeDetectorRef.markForCheck();
             });
 
-        this.profile = this._authService.getUser();
+        this.profile = this._authService.user;
     }
 
     /**

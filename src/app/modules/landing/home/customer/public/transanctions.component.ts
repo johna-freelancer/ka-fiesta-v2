@@ -84,7 +84,7 @@ export class TransactionComponent
     }
 
     getUser() {
-        this.user = this._auth.getUser();
+        this.user = this._auth.user();
     }
 
     back() {

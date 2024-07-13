@@ -17,19 +17,11 @@ export class Auth2Guard  implements CanActivate {
   } 
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        if (!this.authService.isAuthenticated()) {
-        //   this.notify.info("You are not authorized to access this page.");
-          this.router.navigateByUrl('/stores');
-          return false;
-      }
-        if (!next.data['roles'])
-          return true;
-        if (!this.commonService.isGrantedAny(next.data['roles'])) {
-            this.router.navigateByUrl('/stores');
-            return false;
-        } else {
-            return true;
-        }
+    if (this.authService.user().role === 'admin') {
+      return true;
+    } else {
+      this.router.navigateByUrl('/stores');
+      return false;
+    }
   }
-  
 }
