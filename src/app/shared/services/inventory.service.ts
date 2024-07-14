@@ -17,7 +17,7 @@ export class InventoryService {
     }
 
     list(payload) {
-      return this._http.post(environment.API_ENDPOINT + '/v1/inventory/list', payload);
+      return this._http.post(environment.API_ENDPOINT + 'inventory/list', payload);
     }
 }
 

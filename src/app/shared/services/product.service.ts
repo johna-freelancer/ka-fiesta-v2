@@ -17,31 +17,31 @@ export class ProductService {
     }
 
     get(id) {
-      return this._http.get(environment.API_ENDPOINT + '/v1/product/' + id);
+      return this._http.get(environment.API_ENDPOINT + 'product/' + id);
     }
 
     create(payload) {
-      return this._http.post(environment.API_ENDPOINT + '/v1/product', payload);
+      return this._http.post(environment.API_ENDPOINT + 'product', payload);
     }
 
     update(payload) {
-      return this._http.post(environment.API_ENDPOINT + '/v1/product/update', payload);
+      return this._http.post(environment.API_ENDPOINT + 'product/update', payload);
 
     }
     list(payload) {
-      return this._http.post(environment.API_ENDPOINT + '/v1/product/list', payload);
+      return this._http.post(environment.API_ENDPOINT + 'product/list', payload);
     }
 
     delete(id) {
-      return this._http.delete(environment.API_ENDPOINT + '/v1/product/' + id);
+      return this._http.delete(environment.API_ENDPOINT + 'product/' + id);
     }
 
     upload(payload, id) {
-      return this._http.post(environment.API_ENDPOINT + '/v1/product/upload/' + id, payload);
+      return this._http.post(environment.API_ENDPOINT + 'product/upload/' + id, payload);
     }
 
     getProductForInventory(payload) {
-      return this._http.post(environment.API_ENDPOINT + '/v1/product/getProductsForInventory', payload);
+      return this._http.post(environment.API_ENDPOINT + 'product/getProductsForInventory', payload);
     }
 }
 

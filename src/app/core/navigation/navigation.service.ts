@@ -6,15 +6,13 @@ import { Navigation } from 'app/core/navigation/navigation.types';
 @Injectable({
     providedIn: 'root'
 })
-export class NavigationService
-{
+export class NavigationService {
     private _navigation: ReplaySubject<Navigation> = new ReplaySubject<Navigation>(1);
 
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
-    {
+    constructor(private _httpClient: HttpClient) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -24,8 +22,7 @@ export class NavigationService
     /**
      * Getter for navigation
      */
-    get navigation$(): Observable<Navigation>
-    {
+    get navigation$(): Observable<Navigation> {
         return this._navigation.asObservable();
     }
 
@@ -36,8 +33,7 @@ export class NavigationService
     /**
      * Get all navigation data
      */
-    get(): Observable<Navigation>
-    {
+    get(): Observable<Navigation> {
         return this._httpClient.get<Navigation>('api/common/navigation').pipe(
             tap((navigation) => {
                 this._navigation.next(navigation);

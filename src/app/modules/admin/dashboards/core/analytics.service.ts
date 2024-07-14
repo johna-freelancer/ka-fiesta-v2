@@ -6,15 +6,13 @@ import { environment } from 'environments/environment';
 @Injectable({
     providedIn: 'root'
 })
-export class AnalyticsService
-{
+export class AnalyticsService {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
 
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
-    {
+    constructor(private _httpClient: HttpClient) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -24,8 +22,7 @@ export class AnalyticsService
     /**
      * Getter for data
      */
-    get data$(): Observable<any>
-    {
+    get data$(): Observable<any> {
         return this._data.asObservable();
     }
 
@@ -36,8 +33,7 @@ export class AnalyticsService
     /**
      * Get data
      */
-    getData(): Observable<any>
-    {
+    getData(): Observable<any> {
         return this._httpClient.get('api/dashboards/analytics').pipe(
             tap((response: any) => {
                 this._data.next(response);
@@ -45,23 +41,19 @@ export class AnalyticsService
         );
     }
 
-    getCollectableAmount(payload)
-    {
-        return this._httpClient.post(environment.API_ENDPOINT + '/v1/dashboard/getTotalCollectable', payload);
-    }
-    
-    getCollectedAmount(payload)
-    {
-        return this._httpClient.post(environment.API_ENDPOINT + '/v1/dashboard/getTotalCollected', payload);
+    getCollectableAmount(payload) {
+        return this._httpClient.post(environment.API_ENDPOINT + 'dashboard/getTotalCollectable', payload);
     }
 
-    getActiveMerchantCount()
-    {
-        return this._httpClient.get(environment.API_ENDPOINT + '/v1/dashboard/getActiveMerchantCount');
+    getCollectedAmount(payload) {
+        return this._httpClient.post(environment.API_ENDPOINT + 'dashboard/getTotalCollected', payload);
     }
 
-    getCompletedTransactions() 
-    {
-        return this._httpClient.get(environment.API_ENDPOINT + '/v1/dashboard/getNumberOfCompletedOrders');
+    getActiveMerchantCount() {
+        return this._httpClient.get(environment.API_ENDPOINT + 'dashboard/getActiveMerchantCount');
+    }
+
+    getCompletedTransactions() {
+        return this._httpClient.get(environment.API_ENDPOINT + 'dashboard/getNumberOfCompletedOrders');
     }
 }

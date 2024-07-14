@@ -32,8 +32,8 @@ export class LayoutComponent implements OnInit, OnDestroy
         private _router: Router,
         private _fuseConfigService: FuseConfigService,
         private _fuseMediaWatcherService: FuseMediaWatcherService
-    )
-    {
+    ) {
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -43,8 +43,7 @@ export class LayoutComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Set the theme and scheme based on the configuration
         combineLatest([
             this._fuseConfigService.config$,

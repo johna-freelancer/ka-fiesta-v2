@@ -18,7 +18,7 @@ import { analyticsRoutes } from 'app/modules/admin/dashboards/analytics/analytic
     declarations: [
         AnalyticsComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(analyticsRoutes),
         MatButtonModule,
         MatButtonToggleModule,
@@ -33,6 +33,4 @@ import { analyticsRoutes } from 'app/modules/admin/dashboards/analytics/analytic
         SharedModule
     ]
 })
-export class AnalyticsModule
-{
-}
+export class AnalyticsModule { }

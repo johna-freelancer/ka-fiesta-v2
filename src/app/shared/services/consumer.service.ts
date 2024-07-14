@@ -36,27 +36,27 @@ export class ConsumerService {
   }
 
   search(keyword) {
-    return this._http.get(environment.API_ENDPOINT + '/v1/consumer/search?keyword=' + keyword);
+    return this._http.get(environment.API_ENDPOINT + 'consumer/search?keyword=' + keyword);
   }
 
   getProducts(payload) {
-    return this._http.post(environment.API_ENDPOINT + '/v1/consumer/products', payload);
+    return this._http.post(environment.API_ENDPOINT + 'consumer/products', payload);
   }
 
   addOrder(payload) {
-    return this._http.post(environment.API_ENDPOINT + '/v1/orders/add', payload);
+    return this._http.post(environment.API_ENDPOINT + 'orders/add', payload);
   }
 
   upload(file, id) {
-    return this._http.post(environment.API_ENDPOINT + '/v1/orders/upload/'+id, file);
+    return this._http.post(environment.API_ENDPOINT + 'orders/upload/'+id, file);
   }
 
   track(id) {
-    return this._http.get(environment.API_ENDPOINT + '/v1/consumer/track/'+id);
+    return this._http.get(environment.API_ENDPOINT + 'consumer/track/'+id);
   }
 
   listTransactions(payload) {
-    return this._http.post(environment.API_ENDPOINT + '/v1/orders/getOrders', payload);
+    return this._http.post(environment.API_ENDPOINT + 'orders/getOrders', payload);
   }
 
   setSelectedStore(store) {

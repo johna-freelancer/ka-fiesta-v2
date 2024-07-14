@@ -122,15 +122,11 @@ export class AuthService {
       return of(undefined);
     }
 
-    const httpHeaders = new HttpHeaders({
-      Authorization: `Bearer ${bearer.token}`,
-    });
-
     return this._http.get<{
       status: string
       data: User | null,
       message: string
-    }>(this.url + 'auth/me', {headers: httpHeaders}).pipe(
+    }>(this.url + 'auth/me').pipe(
       tap(res => {
         this._user.next(res.data);
         return res.data;
@@ -140,6 +136,17 @@ export class AuthService {
         return of(err.error);
       })
     )
+  }
+
+  /**
+   * Get Bearer Token from local storage
+   * @return Bearer token
+   */
+  getAuthFromLocalStorage(): Bearer | null {
+    if (!localStorage.getItem('auth')) {
+      return null
+    }
+    return JSON.parse(localStorage.getItem('auth'));
   }
 
   /**
@@ -156,17 +163,6 @@ export class AuthService {
   }
 
   /**
-   * Get Bearer Token from local storage
-   * @return Bearer token
-   */
-  private getAuthFromLocalStorage(): Bearer | null {
-    if (!localStorage.getItem('auth')) {
-      return null
-    }
-    return JSON.parse(localStorage.getItem('auth'));
-  }
-
-  /**
    * Check if token is expired
    * @return boolean
    */
@@ -175,15 +171,12 @@ export class AuthService {
       return true;
     }
 
-    const date = new Date(0);
-    date.setUTCSeconds(bearer.expires_in);
-
-    if (!date) {
-      return true;
+    var decoded = <any>jwt_decode(bearer.token);
+    var expiry = new Date(decoded.exp * 1000);
+    if(new Date() > expiry) {
+        return true;
     }
-
-    // Check if the token is expired
-    return !(date.valueOf() > new Date().valueOf() + 0 * 1000);
+    return false;
   }
 
 }
